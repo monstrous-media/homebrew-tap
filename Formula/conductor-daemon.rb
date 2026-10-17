@@ -3,13 +3,12 @@
 
 # Binary formula on purpose: it repackages the GitHub release tarballs so the
 # macOS binaries keep their Developer ID signature and notarization — a brew
-# source build would produce unsigned ones. Bump: update `version` and the
-# three url/sha256 pairs from the new release's .sha256 assets
-# (monstrous-media/conductor#79).
+# source build would produce unsigned ones. Bump: update the three url/sha256
+# pairs from the new release's .sha256 assets — the version is scanned from
+# the URLs (monstrous-media/conductor#79).
 class ConductorDaemon < Formula
   desc "Conductor multi-protocol input mapping engine daemon and CLI"
   homepage "https://getconductor.app"
-  version "0.1.0"
   license "MIT"
 
   on_macos do

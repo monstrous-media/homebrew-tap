@@ -29,7 +29,7 @@ conductorctl --version
 
 ## Releasing a new version
 
-Update `version` and the three `url`/`sha256` pairs in
+Update the three `url`/`sha256` pairs (version is scanned from the URLs) in
 `Formula/conductor-daemon.rb` from the new release's `.sha256` assets.
 Tracked in [monstrous-media/conductor#79](https://github.com/monstrous-media/conductor/issues/79).
 
