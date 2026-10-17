@@ -1,0 +1,30 @@
+# Copyright 2025-2026 Monstrous Media
+# SPDX-License-Identifier: MIT
+#
+# Checks the latest monstrous-media/conductor release every 6 hours and opens
+# a PR updating the formula's url/sha256 pairs. Zero cross-repo secrets by
+# design (monstrous-media/conductor#80): runs on this repo's own GITHUB_TOKEN.
+# Caveat of that design: a PR opened by GITHUB_TOKEN does not trigger the
+# pull_request CI run — close/reopen the PR (or push to its branch) to run CI
+# before merging.
+name: Bump formula
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # same pin as monstrous-media/conductor workflows
+
+      - name: Open bump PR if a newer release exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: .github/scripts/bump.sh

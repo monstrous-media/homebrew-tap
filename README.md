@@ -24,6 +24,13 @@ conductor --version
 conductorctl --version
 ```
 
+Uninstall:
+
+```sh
+brew uninstall conductor-daemon
+brew untap monstrous-media/tap   # optional
+```
+
 > Naming note: the formula is `conductor-daemon` because the bare name
 > `conductor` belongs to an unrelated Homebrew cask (conductor.build).
 

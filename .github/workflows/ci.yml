@@ -1,0 +1,49 @@
+# Copyright 2025-2026 Monstrous Media
+# SPDX-License-Identifier: MIT
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        # No free Intel macOS runners remain on GitHub-hosted; the Intel
+        # asset is produced by the same release pipeline and pinned by
+        # sha256, so arm64 + Linux coverage exercises the formula logic.
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # same pin as monstrous-media/conductor workflows
+
+      - name: Stage this checkout as the tap
+        run: |
+          TAP_DIR="$(brew --repository)/Library/Taps/monstrous-media/homebrew-tap"
+          mkdir -p "$(dirname "$TAP_DIR")"
+          rm -rf "$TAP_DIR"
+          cp -R "$GITHUB_WORKSPACE" "$TAP_DIR"
+
+      - name: brew style
+        run: brew style monstrous-media/tap
+
+      - name: brew audit (strict, online)
+        run: brew audit --strict --online monstrous-media/tap/conductor-daemon
+
+      - name: brew install
+        run: brew install --verbose monstrous-media/tap/conductor-daemon
+
+      - name: brew test
+        run: brew test --verbose monstrous-media/tap/conductor-daemon
+
+      - name: Installed binaries run
+        run: |
+          "$(brew --prefix)/bin/conductor" --version
+          "$(brew --prefix)/bin/conductorctl" --version

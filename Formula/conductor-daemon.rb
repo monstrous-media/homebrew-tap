@@ -7,9 +7,14 @@
 # pairs from the new release's .sha256 assets — the version is scanned from
 # the URLs (monstrous-media/conductor#79).
 class ConductorDaemon < Formula
-  desc "Conductor multi-protocol input mapping engine daemon and CLI"
+  desc "Multi-protocol input mapping engine daemon and control CLI"
   homepage "https://getconductor.app"
   license "MIT"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   on_macos do
     on_arm do
@@ -32,6 +37,9 @@ class ConductorDaemon < Formula
   def install
     bin.install "conductor"
     bin.install "conductorctl"
+    # License/attribution files ship in tarballs from v0.1.1 onward
+    # (monstrous-media/conductor#80); v0.1.0 tarballs are binaries-only.
+    doc.install Dir["LICENSE", "NOTICE", "THIRD_PARTY_LICENSES.md"]
   end
 
   def caveats
@@ -47,5 +55,19 @@ class ConductorDaemon < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/conductor --version")
     assert_match version.to_s, shell_output("#{bin}/conductorctl --version")
+
+    # Daemon-free config validation exercises real engine code paths.
+    (testpath/"min.toml").write <<~TOML
+      [[endpoints]]
+      alias = "test-device"
+      direction = "Input"
+      type = "Matcher"
+      matchers = [{ type = "NameContains", value = "Test Device" }]
+
+      [[modes]]
+      name = "Default"
+    TOML
+    output = shell_output("#{bin}/conductorctl validate-schema --config #{testpath}/min.toml")
+    assert_match "Config is valid", output
   end
 end
