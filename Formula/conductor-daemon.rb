@@ -18,19 +18,19 @@ class ConductorDaemon < Formula
 
   on_macos do
     on_arm do
-      url "https://github.com/monstrous-media/conductor/releases/download/v0.1.0/conductor-daemon-aarch64-apple-darwin.tar.gz"
-      sha256 "8e879ccc66389b8273f72198a9da06fded88ccb6233d9f24fb1bed0c1ecd19e0"
+      url "https://github.com/monstrous-media/conductor/releases/download/v0.2.0/conductor-daemon-aarch64-apple-darwin.tar.gz"
+      sha256 "42bc53bea5d55306f8e824fea5d36781e7c551fd57abf8b9c16f42cba3beeafb"
     end
     on_intel do
-      url "https://github.com/monstrous-media/conductor/releases/download/v0.1.0/conductor-daemon-x86_64-apple-darwin.tar.gz"
-      sha256 "de2adf7bbff2adc1f8602490dc3be95df3b8d0d8d71ba910501cbdbd7c352a0d"
+      url "https://github.com/monstrous-media/conductor/releases/download/v0.2.0/conductor-daemon-x86_64-apple-darwin.tar.gz"
+      sha256 "27ff2a307066a176b7299bab19b88a2ff4a99e69e20d70143bea918f46a4def9"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/monstrous-media/conductor/releases/download/v0.1.0/conductor-daemon-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "a7773a23b8c298939237c1878743517c5e36a333e3fcdf019f6ee933f8d28a5f"
+      url "https://github.com/monstrous-media/conductor/releases/download/v0.2.0/conductor-daemon-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "3f378518f2ba79f05eec75efbb3788a51d2c50311bdd09f3691ffce7d33f7c3b"
     end
   end
 
